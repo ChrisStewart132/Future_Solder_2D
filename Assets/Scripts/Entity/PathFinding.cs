@@ -12,7 +12,7 @@ using UnityEngine;
 
 public class PathFinding : MonoBehaviour
 {
-    int MAX_DEPTH = 32;// n nodes searched in the frontier per frame
+    int MAX_DEPTH = 64;// n nodes searched in the frontier per frame
     public Frontier frontier;// frontier is saved to continue searches that timed out
     public Vector3Int target;// holds the target of the saved frontier to continue searching if path called again
     public Color color = new Color(1f, 1f, 1f, 0.5f);

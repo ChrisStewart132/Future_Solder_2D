@@ -21,6 +21,9 @@ public class World : MonoBehaviour
     public static Tilemap tilemap;
 
     public GameObject mouse_cell_object;
+    public GameObject mouse_selection_object;
+    Vector3 mouse_down_position;
+    bool selecting = false;
 
     void Awake()
     {
@@ -32,13 +35,52 @@ public class World : MonoBehaviour
         Instance = this;
         grid = gameObject.GetComponent<Grid>();
         tilemap = gameObject.GetComponentInChildren<Tilemap>();
+
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        
-        Vector3Int cell_pos = World.snapToGrid(World.get_mouse_position());
+        Vector3 mouseWorldPosition = World.get_mouse_position();
+
+        // show cell moused over
+        Vector3Int cell_pos = World.snapToGrid(mouseWorldPosition);
         mouse_cell_object.transform.position = cell_pos;
+
+        // show mouse down selection
+        if (Input.GetMouseButtonDown(0))// starting a selection box
+        {
+            selecting = true;
+            mouse_down_position = mouseWorldPosition;
+            mouse_selection_object.SetActive(true); // Show the selection box
+        }
+        else if (Input.GetMouseButton(0) && selecting)// dragging a selection box
+        {
+            UpdateSelectionBox(mouseWorldPosition);
+        }
+        else if(Input.GetMouseButtonUp(0) && selecting)// releasing a selection box 
+        {
+            selecting = false;
+            mouse_selection_object.SetActive(false); // Hide the selection box
+        }
+        else
+        {
+
+        }
+
+    }
+
+    void UpdateSelectionBox(Vector3 currentMousePosition)
+    {
+        Vector3 boxStart = mouse_down_position;
+        Vector3 boxEnd = currentMousePosition;
+
+        Vector3 center = (boxStart + boxEnd) / 2;
+        center.z = 0;
+
+        Vector3 magnitude = (boxEnd - boxStart);
+        mouse_selection_object.transform.localScale = magnitude;
+
+        mouse_selection_object.transform.position = center;
     }
 
     public static Vector3 get_mouse_position()

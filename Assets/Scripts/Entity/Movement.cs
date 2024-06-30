@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    public float maxSpeed = 1f;
+    public float maxSpeed = 4f;
     private Rigidbody2D rb;
 
     public void Start()

@@ -16,7 +16,7 @@ public class MovementController : MonoBehaviour
         Vector3 mouseWorldPosition = World.get_mouse_position();
         if (Input.GetMouseButtonUp(0))
         {
-            World.remove_tile(mouseWorldPosition);
+            //World.remove_tile(mouseWorldPosition);
         }
         else if (Input.GetMouseButtonUp(1))
         {

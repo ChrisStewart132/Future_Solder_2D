@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5188173376287432123}
   - component: {fileID: 5188173376287432120}
+  - component: {fileID: 4080763653603739800}
   - component: {fileID: 5188173376287432121}
   - component: {fileID: 5188173376287432135}
   - component: {fileID: 5188173376287432132}
@@ -17,7 +18,7 @@ GameObject:
   - component: {fileID: 5188173376287432130}
   m_Layer: 0
   m_Name: Soldier
-  m_TagString: Untagged
+  m_TagString: Entity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -77,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c81540132dabb0148b5ccd10443da867, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ec9a1965254a9634e97c05a5c0d8b7bf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -88,6 +89,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &4080763653603739800
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5188173376287432131}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.0023717433}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.56, y: 2.56}
+    newSize: {x: 2.56, y: 2.56}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5541096, y: 0.5493661}
+  m_EdgeRadius: 0
 --- !u!50 &5188173376287432121
 Rigidbody2D:
   serializedVersion: 4
@@ -147,7 +174,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc5a34a57b04877468c328974b58dde5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouse_cell: {fileID: 8275638848473921433, guid: 7c3bb6c705c50b74695f452592aa202c, type: 3}
 --- !u!114 &5188173376287432130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,6 +195,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5188173376287432123}
     m_Modifications:
+    - target: {fileID: 6889922000488963361, guid: 4a8e636b5bc85a945b3a1c51b740e879, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6889922000516268093, guid: 4a8e636b5bc85a945b3a1c51b740e879, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -216,6 +246,18 @@ PrefabInstance:
     - target: {fileID: 6889922000516268094, guid: 4a8e636b5bc85a945b3a1c51b740e879, type: 3}
       propertyPath: m_Name
       value: State
+      objectReference: {fileID: 0}
+    - target: {fileID: 6889922000516268094, guid: 4a8e636b5bc85a945b3a1c51b740e879, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6889922001337800422, guid: 4a8e636b5bc85a945b3a1c51b740e879, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6889922001688500631, guid: 4a8e636b5bc85a945b3a1c51b740e879, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a8e636b5bc85a945b3a1c51b740e879, type: 3}
