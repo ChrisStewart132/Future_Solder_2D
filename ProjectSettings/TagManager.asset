@@ -9,7 +9,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Entity
+  - 
   - Water
   - UI
   - 
@@ -23,9 +23,9 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - All
   - Ground
-  - 
+  - Air
   - 
   - 
   - 
@@ -41,4 +41,19 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: SortingLayer1
+    uniqueID: 1598711047
+    locked: 0
+  - name: SortingLayer2
+    uniqueID: 2157893973
+    locked: 0
+  - name: SortingLayer3
+    uniqueID: 482830471
+    locked: 0
+  - name: SortingLayer4
+    uniqueID: 1873187035
+    locked: 0
+  - name: SortingLayer5
+    uniqueID: 1843137737
     locked: 0

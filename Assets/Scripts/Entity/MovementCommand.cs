@@ -24,9 +24,11 @@ public class MovementCommand : MonoBehaviour
     Vector3 target;// used to continue loading_path to the current target
 
     bool searching = false;// continue loading_path
-    int MAX_SEARCHING_FRAMES = 50*10;// how many frames a target path is allowed to
+    int MAX_SEARCHING_FRAMES = 50 * 10;// how many frames a target path is allowed to
     int SEARCHING_FRAMES = 0;
-    
+
+    float waypoint_proximity = 0.01f;
+
     void Awake()
     {
         state = gameObject.GetComponentInChildren<EntityState>();
@@ -50,7 +52,7 @@ public class MovementCommand : MonoBehaviour
     {
         path = pathFinding.path(transform.position, this.target);
         pathIndex = 0;
-        if(path == null)
+        if (path == null)
         {
             clear_path();
             searching = true;
@@ -67,21 +69,27 @@ public class MovementCommand : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (SEARCHING_FRAMES > MAX_SEARCHING_FRAMES)
+        if (SEARCHING_FRAMES > MAX_SEARCHING_FRAMES)// pathfinding taken too long and timed out
         {
             searching = false;
         }
 
-        if(n_frames_stuck > MAX_FRAMES_STUCK)
+        if (n_frames_stuck > MAX_FRAMES_STUCK)// stuck too long so re-path
         {
-            pathIndex = Mathf.Max(0, --pathIndex);
+            pathIndex = Mathf.Max(0, pathIndex-1);
+            n_frames_stuck = 0;
+            /*while(path.size() > pathIndex+1)
+            {
+                path.remove(path.size()-1);
+            }*/
         }
 
         if (path != null)// follow path
         {
             pathFinding.drawPath(path, pathIndex);
             Vector3Int path_waypoint = path.get(pathIndex).head;// current path arc to move to
-            if(World.snapToGrid(transform.position) == path_waypoint)// waypoint reached
+            //if (World.snapToGrid(transform.position) == path_waypoint)// waypoint reached close
+            if ((transform.position-path_waypoint).magnitude < waypoint_proximity)// waypoint reached within distance
             {
                 n_frames_stuck = 0;
                 pathIndex++;
@@ -95,8 +103,8 @@ public class MovementCommand : MonoBehaviour
                 movement.move_toward(path_waypoint);
             }
         }
-        else if(searching)// continue loading path
-        {   
+        else if (searching)// continue loading path
+        {
             load_path();
             state.set("searching");
             SEARCHING_FRAMES++;

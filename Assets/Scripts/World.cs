@@ -20,22 +20,29 @@ public class World : MonoBehaviour
     public static Grid grid;
     public static Tilemap tilemap;
 
+    // GameObject cell to render mouse grid pos
     public GameObject mouse_cell_object;
+
+    // GameObject mouse selection rect for mouse down and drag selecting 'Selectable' GameObjects
     public GameObject mouse_selection_object;
-    Vector3 mouse_down_position;
-    bool selecting = false;
+    SelectionBox selectionBox;// selection box script contains a List<> of Selectables
+    Vector3 mouse_down_position;// save mouse pos of last mouse down
+    bool selecting = false;// flag for selection box 
 
     void Awake()
     {
+        // Singleton
         if (Instance != null)
         {
             Debug.LogError("There is more than one instance!");
             return;
         }
         Instance = this;
+
         grid = gameObject.GetComponent<Grid>();
         tilemap = gameObject.GetComponentInChildren<Tilemap>();
 
+        selectionBox = mouse_selection_object.GetComponent<SelectionBox>();
     }
 
     void Update()
@@ -46,9 +53,19 @@ public class World : MonoBehaviour
         Vector3Int cell_pos = World.snapToGrid(mouseWorldPosition);
         mouse_cell_object.transform.position = cell_pos;
 
+        // left click 
         // show mouse down selection
         if (Input.GetMouseButtonDown(0))// starting a selection box
         {
+            // deselect previous selection
+            List<Selectable> selectedObjects = selectionBox.GetSelectedObjects();
+            foreach (Selectable selectable in selectedObjects)
+            {
+                selectable.Deselect();
+            }
+            selectedObjects.Clear();
+
+
             selecting = true;
             mouse_down_position = mouseWorldPosition;
             mouse_selection_object.SetActive(true); // Show the selection box
@@ -57,8 +74,28 @@ public class World : MonoBehaviour
         {
             UpdateSelectionBox(mouseWorldPosition);
         }
-        else if(Input.GetMouseButtonUp(0) && selecting)// releasing a selection box 
-        {
+        else if(Input.GetMouseButtonUp(0) && selecting)// releasing a selection box and or left click selection
+        { 
+            // raycast to select last mouse position object(s)
+            Vector3 direction = Vector3.forward; // Raycast along the Z axis in 3D space
+            RaycastHit2D hit = Physics2D.Raycast(mouseWorldPosition, direction, Mathf.Infinity); // Set distance to Infinity for continuous raycast       
+            if (hit.collider != null)// Check if the raycast hit something
+            {
+                GameObject hitObject = hit.collider.gameObject;
+                Selectable objectSelectable = hitObject.GetComponent<Selectable>();
+                if (objectSelectable != null)
+                {
+                    objectSelectable.Select();
+                    List<Selectable> selectedObjects = selectionBox.GetSelectedObjects();
+                    selectedObjects.Add(objectSelectable);
+                }
+            }
+            else
+            {
+                // Raycast did not hit anything
+            }
+
+            // release selection box
             selecting = false;
             mouse_selection_object.SetActive(false); // Hide the selection box
         }
@@ -67,6 +104,17 @@ public class World : MonoBehaviour
 
         }
 
+        // right click
+        // movement command all selected Selectable GameObjects
+        if (Input.GetMouseButtonUp(1))
+        {
+            // move selected objects
+            List<Selectable> selectedObjects = selectionBox.GetSelectedObjects();
+            foreach (Selectable selectable in selectedObjects)
+            {
+                selectable.gameObject.GetComponent<MovementCommand>().move_to_target(mouseWorldPosition);
+            }
+        }
     }
 
     void UpdateSelectionBox(Vector3 currentMousePosition)

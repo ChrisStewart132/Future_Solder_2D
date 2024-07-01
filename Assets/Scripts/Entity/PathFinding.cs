@@ -12,7 +12,7 @@ using UnityEngine;
 
 public class PathFinding : MonoBehaviour
 {
-    int MAX_DEPTH = 64;// n nodes searched in the frontier per frame
+    int MAX_DEPTH = 1;// n nodes searched in the frontier per frame
     public Frontier frontier;// frontier is saved to continue searches that timed out
     public Vector3Int target;// holds the target of the saved frontier to continue searching if path called again
     public Color color = new Color(1f, 1f, 1f, 0.5f);
@@ -303,7 +303,7 @@ public class Grid2DGraph : Graph
 
         int diagonal_cost = 14;
         int cost = 10;
-        if (false)
+        if (true)
         {
             // diagonals
             arcs.Add(new Arc(node, new Vector3Int(node.x + 1, node.y + 1, 0), 4, diagonal_cost));
