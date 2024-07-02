@@ -50,6 +50,11 @@ public class MovementCommand : MonoBehaviour
 
     void load_path()
     {
+        if (!World.cell_walkable(this.target))
+        {
+            clear_path();
+            return;
+        }
         path = pathFinding.path(transform.position, this.target);
         pathIndex = 0;
         if (path == null)

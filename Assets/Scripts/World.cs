@@ -72,7 +72,7 @@ public class World : MonoBehaviour
         }
         else if (Input.GetMouseButton(0) && selecting)// dragging a selection box
         {
-            UpdateSelectionBox(mouseWorldPosition);
+            update_selection_box(mouseWorldPosition);
         }
         else if(Input.GetMouseButtonUp(0) && selecting)// releasing a selection box and or left click selection
         { 
@@ -108,26 +108,53 @@ public class World : MonoBehaviour
         // movement command all selected Selectable GameObjects
         if (Input.GetMouseButtonUp(1))
         {
-            // move selected objects
-            List<Selectable> selectedObjects = selectionBox.GetSelectedObjects();
-            foreach (Selectable selectable in selectedObjects)
-            {
-                selectable.gameObject.GetComponent<MovementCommand>().move_to_target(mouseWorldPosition);
-            }
+            move_selected_objects(mouseWorldPosition);
         }
     }
 
-    void UpdateSelectionBox(Vector3 currentMousePosition)
+    void move_selected_objects(Vector3 pos)
+    {
+        List<Selectable> selectedObjects = selectionBox.GetSelectedObjects();
+        //List<Vector3> positions = get_positions_around_target(pos, selectedObjects.Count);
+        for (int i = 0; i < selectedObjects.Count; i++)
+        {
+            Selectable selectable = selectedObjects[i];
+            selectable.gameObject.GetComponent<MovementCommand>().move_to_target(pos);
+            //selectable.gameObject.GetComponent<MovementCommand>().move_to_target(positions[i]);
+        }
+    }
+
+    // todo combine to formation then move
+    List<Vector3> get_positions_around_target(Vector3 pos, int n)
+    {
+        List<Vector3> positions = new List<Vector3>();
+
+        // square lxl positions
+        float sqrt = Mathf.Sqrt(n);
+        int length = Mathf.CeilToInt(sqrt);
+
+
+        for (int i = 0; i < length; i++)
+        {
+            for(int j = 0; j < length; j++)
+            {
+                Vector3 v = pos + Vector3.right * (j - length / 2) + Vector3.down * (i - length / 2);
+                if (World.cell_walkable(v))
+                    positions.Add(v);
+            }
+        } 
+
+        return positions;
+    }
+
+    void update_selection_box(Vector3 currentMousePosition)
     {
         Vector3 boxStart = mouse_down_position;
         Vector3 boxEnd = currentMousePosition;
-
         Vector3 center = (boxStart + boxEnd) / 2;
         center.z = 0;
-
         Vector3 magnitude = (boxEnd - boxStart);
         mouse_selection_object.transform.localScale = magnitude;
-
         mouse_selection_object.transform.position = center;
     }
 
@@ -159,7 +186,7 @@ public class World : MonoBehaviour
         Sprite sprite = tilemap.GetSprite(cellPosition);
         if(sprite != null)
         {
-            if (sprite.name == "wall")
+            if (sprite.name == "brick")
             {
                 return 9999;
             }
@@ -179,7 +206,12 @@ public class World : MonoBehaviour
     {
         Vector3Int cellPosition = grid.WorldToCell(pos);
         Sprite sprite = tilemap.GetSprite(cellPosition);
-        if (sprite != null && sprite.name == "wall")
+        if (sprite == null)
+        { 
+            return true;
+        }
+
+        if (sprite.name == "brick")
         {
             return false;
         }

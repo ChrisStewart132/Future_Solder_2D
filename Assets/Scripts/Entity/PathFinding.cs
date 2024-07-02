@@ -306,10 +306,17 @@ public class Grid2DGraph : Graph
         if (true)
         {
             // diagonals
-            arcs.Add(new Arc(node, new Vector3Int(node.x + 1, node.y + 1, 0), 4, diagonal_cost));
-            arcs.Add(new Arc(node, new Vector3Int(node.x - 1, node.y + 1, 0), 5, diagonal_cost));
-            arcs.Add(new Arc(node, new Vector3Int(node.x + 1, node.y - 1, 0), 6, diagonal_cost));
-            arcs.Add(new Arc(node, new Vector3Int(node.x - 1, node.y - 1, 0), 7, diagonal_cost));
+            if(World.cell_walkable(node+Vector3.up) && World.cell_walkable(node + Vector3.right))
+                arcs.Add(new Arc(node, new Vector3Int(node.x + 1, node.y + 1, 0), 4, diagonal_cost));
+
+            if (World.cell_walkable(node + Vector3.up) && World.cell_walkable(node + Vector3.left))
+                arcs.Add(new Arc(node, new Vector3Int(node.x - 1, node.y + 1, 0), 5, diagonal_cost));
+
+            if (World.cell_walkable(node + Vector3.down) && World.cell_walkable(node + Vector3.right))
+                arcs.Add(new Arc(node, new Vector3Int(node.x + 1, node.y - 1, 0), 6, diagonal_cost));
+
+            if (World.cell_walkable(node + Vector3.down) && World.cell_walkable(node + Vector3.left))
+                arcs.Add(new Arc(node, new Vector3Int(node.x - 1, node.y - 1, 0), 7, diagonal_cost));
         }
         
 
