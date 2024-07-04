@@ -67,7 +67,7 @@ public class MovementCommand : MonoBehaviour
 
     public void move_to_target(Vector3 target)
     {
-        if (!World.cell_walkable(this.target))
+        if (!World.cell_walkable(target))
             return;// dont move if target cell not walkable
         this.target = target;
         load_path();
@@ -75,6 +75,12 @@ public class MovementCommand : MonoBehaviour
 
     void load_path()
     {
+        if (!World.cell_walkable(this.target))
+        {
+            clear_path();
+            return;
+        }
+            
         path = pathFinding.path(transform.position, this.target);
         pathIndex = 0;
         state.set("searching");
