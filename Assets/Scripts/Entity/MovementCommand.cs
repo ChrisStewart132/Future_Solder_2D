@@ -21,13 +21,36 @@ public class MovementCommand : MonoBehaviour
     public int pathIndex = 0;
     int MAX_FRAMES_STUCK = 50 * 5;//allow 5s of time being stuck than resolve
     int n_frames_stuck = 0;// n_frames stuck consecutively while trying to move
+    
     Vector3 target;// used to continue loading_path to the current target
 
-    bool searching = false;// continue loading_path
     int MAX_SEARCHING_FRAMES = 50 * 10;// how many frames a target path is allowed to
     int SEARCHING_FRAMES = 0;
 
     float waypoint_proximity = 0.01f;
+
+    // consider other entity's during pathing
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.tag == "Entity")
+        {
+            state.set("colliding");
+        }
+    }
+    void OnTriggerStay2D(Collider2D col)
+    {
+        if (col.gameObject.tag == "Entity")
+        {
+            //state.set("colliding");
+        }
+    }
+    void OnTriggerExit2D(Collider2D col)
+    {
+        if (col.gameObject.tag == "Entity")
+        {
+            state.set("searching");
+        }
+    }
 
     void Awake()
     {
@@ -44,52 +67,45 @@ public class MovementCommand : MonoBehaviour
 
     public void move_to_target(Vector3 target)
     {
+        if (!World.cell_walkable(this.target))
+            return;// dont move if target cell not walkable
         this.target = target;
         load_path();
     }
 
     void load_path()
     {
-        if (!World.cell_walkable(this.target))
-        {
-            clear_path();
-            return;
-        }
         path = pathFinding.path(transform.position, this.target);
         pathIndex = 0;
-        if (path == null)
+        state.set("searching");
+        if (path == null)// path too complex so didnt finish loading, change state back to idle
         {
             clear_path();
-            searching = true;
+            state.set("searching");
+        }
+        else
+        {
+            state.set("moving");
         }
     }
 
     public void clear_path()
     {
-        searching = false;
         path = null;
         pathIndex = 0;
-        movement.stop_moving();
+        state.set("idle");
     }
 
     void FixedUpdate()
     {
-        if (SEARCHING_FRAMES > MAX_SEARCHING_FRAMES)// pathfinding taken too long and timed out
-        {
-            searching = false;
-        }
-
         if (n_frames_stuck > MAX_FRAMES_STUCK)// stuck too long so re-path
         {
             pathIndex = Mathf.Max(0, pathIndex-1);
             n_frames_stuck = 0;
-            /*while(path.size() > pathIndex+1)
-            {
-                path.remove(path.size()-1);
-            }*/
+            state.set("searching");
         }
 
-        if (path != null)// follow path
+        if (state.get() == "moving")// follow path
         {
             pathFinding.drawPath(path, pathIndex);
             Vector3Int path_waypoint = path.get(pathIndex).head;// current path arc to move to
@@ -104,25 +120,30 @@ public class MovementCommand : MonoBehaviour
             else
             {
                 n_frames_stuck++;
-                state.set("moving");
                 movement.move_toward(path_waypoint);
             }
         }
-        else if (searching)// continue loading path
+        else if (state.get() == "searching")// continue loading path
         {
+            movement.stop_moving();
             load_path();
-            state.set("searching");
             SEARCHING_FRAMES++;
         }
-        else// idle
+        else if(state.get() == "idle")
         {
-            state.set("idle");
             movement.stop_moving();
         }
-
-        if (!searching)
+        else if (state.get() == "colliding")
         {
-            SEARCHING_FRAMES = 0;
+            movement.stop_moving();
+            StartCoroutine(pause_and_search(1f));
         }
+    }
+
+
+    private IEnumerator pause_and_search(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        state.set("searching");
     }
 }
