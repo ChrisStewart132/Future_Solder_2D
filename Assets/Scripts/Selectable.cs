@@ -11,7 +11,7 @@ public class Selectable : MonoBehaviour
     {
         unselected_color = GetComponent<SpriteRenderer>().color;
         selected_color = unselected_color*0.8f;
-        selected_color = selected_color + new Color(0, 0.2f, 0);
+        selected_color = selected_color + new Color(0, 0.5f, 0);
     }
 
     // Method to mark the object as selected

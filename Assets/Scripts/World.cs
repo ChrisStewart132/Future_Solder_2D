@@ -207,7 +207,7 @@ public class World : MonoBehaviour
         Sprite sprite = tilemap.GetSprite(cellPosition);
         if(sprite != null)
         {
-            if (sprite.name == "brick" || sprite.name == "brick_2")
+            if (sprite.name == "brick" || sprite.name == "brick_2" || sprite.name == "wall")
             {
                 return 9999;
             }
@@ -233,7 +233,7 @@ public class World : MonoBehaviour
             return true;
         }
 
-        if (sprite.name == "brick" || sprite.name == "brick_2")
+        if (sprite.name == "brick" || sprite.name == "brick_2" || sprite.name == "wall")
         {
             return false;
         }
