@@ -28,6 +28,8 @@ public class World : MonoBehaviour
     SelectionBox selectionBox;// selection box script contains a List<> of Selectables
     Vector3 mouse_down_position;// save mouse pos of last mouse down
     bool selecting = false;// flag for selection box 
+    bool mouse_dragging_camera = false;// middle mouse drag camera flag
+    Vector3 mouse_middle_mouse_position;// middle mouse drag initial dragging position to scale camera movement
 
     void Awake()
     {
@@ -109,6 +111,25 @@ public class World : MonoBehaviour
         if (Input.GetMouseButtonUp(1))
         {
             move_selected_objects(mouseWorldPosition);
+        }
+
+        // middle mouse button down
+        if (Input.GetMouseButtonDown(2)) // 2 represents the middle mouse button
+        {
+            // Capture the starting position of the drag
+            mouse_middle_mouse_position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mouse_dragging_camera = true;
+        }
+        // middle mouse button release
+        if (Input.GetMouseButtonUp(2))
+        {
+            mouse_dragging_camera = false;
+        }
+        // If dragging, calculate the offset and move the camera
+        if (mouse_dragging_camera)
+        {
+            Vector3 difference = mouse_middle_mouse_position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Camera.main.transform.position += difference/10f;
         }
     }
 
@@ -202,6 +223,7 @@ public class World : MonoBehaviour
         return 1;
     }
 
+    //returns if a cell is walkable (i.e. false if building or entity occupying it
     public static bool cell_walkable(Vector3 pos)
     {
         Vector3Int cellPosition = grid.WorldToCell(pos);

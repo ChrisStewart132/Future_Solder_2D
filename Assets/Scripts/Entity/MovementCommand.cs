@@ -14,6 +14,7 @@ using UnityEngine;
 
 public class MovementCommand : MonoBehaviour
 {
+    BoxCollider2D collider;
     EntityState state;
     Movement movement;
     PathFinding pathFinding;
@@ -53,7 +54,8 @@ public class MovementCommand : MonoBehaviour
     }
 
     void Awake()
-    {
+    { 
+        collider = gameObject.GetComponent<BoxCollider2D>();
         state = gameObject.GetComponentInChildren<EntityState>();
         if (state == null)
         {
@@ -142,14 +144,16 @@ public class MovementCommand : MonoBehaviour
         else if (state.get() == "colliding")
         {
             movement.stop_moving();
-            StartCoroutine(pause_and_search(1f));
+            StartCoroutine(pause_and_search(Random.Range(2.5f, 5.5f)));
         }
     }
 
 
     private IEnumerator pause_and_search(float waitTime)
     {
+        //collider.enabled = false;
         yield return new WaitForSeconds(waitTime);
         state.set("searching");
+        //collider.enabled = true;
     }
 }
