@@ -111,6 +111,7 @@ public class World : MonoBehaviour
         if (Input.GetMouseButtonUp(1))
         {
             move_selected_objects(mouseWorldPosition);
+            selected_guns_shoot(mouseWorldPosition);
         }
 
         // middle mouse button down
@@ -130,6 +131,24 @@ public class World : MonoBehaviour
         {
             Vector3 difference = mouse_middle_mouse_position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Camera.main.transform.position += difference/10f;
+        }
+    }
+
+    void selected_guns_shoot(Vector3 pos)
+    {
+        List<Selectable> selectedObjects = selectionBox.GetSelectedObjects();
+        for (int i = 0; i < selectedObjects.Count; i++)
+        {
+            Selectable selectable = selectedObjects[i];
+            GameObject go = selectable.gameObject;
+            Collider2D col = go.GetComponent<BoxCollider2D>();
+            Gun gun = go.GetComponentInChildren<Gun>();
+            if(gun != null)
+            {
+                Vector3 dir = pos - go.transform.position;
+                gun.shoot(dir);
+                gun.colliders_ignored.Add(col);
+            }
         }
     }
 

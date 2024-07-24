@@ -12,10 +12,12 @@ using UnityEngine;
 
 public class PathFinding : MonoBehaviour
 {
-    int MAX_DEPTH = 1;// n nodes searched in the frontier per frame
+    public int MAX_DEPTH = 10;// n nodes searched in the frontier per frame
     public Frontier frontier;// frontier is saved to continue searches that timed out
     public Vector3Int target;// holds the target of the saved frontier to continue searching if path called again
     public Color color = new Color(1f, 1f, 1f, 0.5f);
+    public bool draw_path = false;
+    public bool draw_frontier = false;
     // returns an optimal path to the target within some constraints
     public Path path(Vector3 start, Vector3 goal)
     {
@@ -30,7 +32,7 @@ public class PathFinding : MonoBehaviour
         }
         else
         {
-            frontier.Draw(color);
+            drawFrontier();
         }
 
 
@@ -47,15 +49,15 @@ public class PathFinding : MonoBehaviour
 
     public void drawPath(Path path, int starting_index)
     {
+        if (draw_path == false)
+            return;
         Path.drawPath(path, starting_index, this.color);
     }
 
     public void drawFrontier()
     {
-        if(frontier == null)
-        {
+        if(frontier == null || draw_frontier == false)
             return;
-        }
         frontier.Draw(color);
     }
     

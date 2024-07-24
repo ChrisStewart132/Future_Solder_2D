@@ -23,19 +23,25 @@ public class EntityState : MonoBehaviour
     {
         for (int i = 0; i < states.Length; i++)
         {
-            states[i].enabled = false;
+            if (states[i].gameObject.name != "selected")
+            {
+                states[i].enabled = false;
+            }
         }
     }
 
-    public void set(string state)
+    public void set(string state, bool status=true)
     {
-        reset();
+        if (state != "selected")
+            reset();
         for (int i = 0; i < states.Length; i++)
         {
             if (states[i].gameObject.name == state)
-                states[i].enabled = true;
+                states[i].enabled = status;
         }
     }
+
+
     public string get()
     {
         for (int i = 0; i < states.Length; i++)
