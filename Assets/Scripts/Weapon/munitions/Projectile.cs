@@ -5,7 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     private Rigidbody2D rb;
-    public Vector3 dir;
+    //public Vector3 dir;
     public float speed = 2f;
     public float lifespan = 10f;
     public List<Collider2D> colliders_ignored;
@@ -18,8 +18,9 @@ public class Projectile : MonoBehaviour
     {
         Destroy(gameObject, lifespan);
     }
-    public void shoot()
+    public void shoot(Vector2 dir)
     {
+        Debug.Log(dir.ToString("0.000"));
         rb.velocity = dir.normalized * speed;
     }
     private void OnTriggerEnter2D(Collider2D collision)

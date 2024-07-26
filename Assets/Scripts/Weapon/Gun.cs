@@ -22,8 +22,7 @@ public class Gun : MonoBehaviour
         GameObject go = GameObject.Instantiate(projectile_prefab);
         go.transform.position = transform.position;
         Projectile projectile = go.GetComponent<Projectile>();
-        projectile.dir = dir.normalized;// transform.forward;
         projectile.colliders_ignored = colliders_ignored;
-        projectile.shoot();
+        projectile.shoot(dir.normalized);
     }
 }

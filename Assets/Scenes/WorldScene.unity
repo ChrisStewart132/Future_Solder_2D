@@ -59754,11 +59754,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5188173376287432130, guid: b8e52077e54e02e44ab7d0af0c69afa0, type: 3}
       propertyPath: draw_path
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5188173376287432130, guid: b8e52077e54e02e44ab7d0af0c69afa0, type: 3}
       propertyPath: draw_frontier
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5188173376287432131, guid: b8e52077e54e02e44ab7d0af0c69afa0, type: 3}
       propertyPath: m_Name

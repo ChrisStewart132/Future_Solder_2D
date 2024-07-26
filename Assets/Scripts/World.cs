@@ -111,7 +111,7 @@ public class World : MonoBehaviour
         if (Input.GetMouseButtonUp(1))
         {
             move_selected_objects(mouseWorldPosition);
-            selected_guns_shoot(mouseWorldPosition);
+            //selected_guns_shoot(mouseWorldPosition);
         }
 
         // middle mouse button down
@@ -146,8 +146,9 @@ public class World : MonoBehaviour
             if(gun != null)
             {
                 Vector3 dir = pos - go.transform.position;
+                dir = dir.normalized;                
                 gun.shoot(dir);
-                gun.colliders_ignored.Add(col);
+                gun.colliders_ignored.Add(col);  
             }
         }
     }
