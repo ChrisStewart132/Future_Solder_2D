@@ -164,7 +164,8 @@ public class World : MonoBehaviour
         for (int i = 0; i < selectedObjects.Count; i++)
         {
             Selectable selectable = selectedObjects[i];
-            selectable.gameObject.GetComponent<MovementCommand>().move_to_target(pos);
+            if(selectable.gameObject.GetComponent<MovementCommand>() != null && selectable.gameObject.tag != "Enemy")
+                selectable.gameObject.GetComponent<MovementCommand>().move_to_target(pos);
             //selectable.gameObject.GetComponent<MovementCommand>().move_to_target(positions[i]);
         }
     }

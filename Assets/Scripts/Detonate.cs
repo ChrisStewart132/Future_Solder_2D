@@ -5,7 +5,7 @@ using UnityEngine;
 public class Detonate : MonoBehaviour
 {
     public GameObject detonation_go_prefab; // Assign in Inspector
-    public float detonation_time = 0.1f;
+    public float detonation_time = 0.4f;
 
     // Start is called before the first frame update
     void Start()
@@ -41,4 +41,6 @@ public class Detonate : MonoBehaviour
         // Destroy this game object
         Destroy(gameObject);
     }
+
+    
 }

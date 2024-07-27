@@ -14,6 +14,8 @@ public class Selectable : MonoBehaviour
     // Method to mark the object as selected
     public void Select()
     {
+        if (gameObject.tag == "Enemy")
+            return;
         isSelected = true;
         es.set("selected", true);
     }
@@ -21,6 +23,8 @@ public class Selectable : MonoBehaviour
     // Method to mark the object as deselected
     public void Deselect()
     {
+        if (gameObject.tag == "Enemy")
+            return;
         isSelected = false;
         es.set("selected", false);
     }

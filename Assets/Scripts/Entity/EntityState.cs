@@ -17,6 +17,7 @@ public class EntityState : MonoBehaviour
     {
         states = gameObject.GetComponentsInChildren<SpriteRenderer>();
         reset();
+        set("idle");
     }
 
     void reset()
