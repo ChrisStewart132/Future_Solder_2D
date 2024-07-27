@@ -18,6 +18,7 @@ public class PathFinding : MonoBehaviour
     public Color color = new Color(1f, 1f, 1f, 0.5f);
     public bool draw_path = false;
     public bool draw_frontier = false;
+
     // returns an optimal path to the target within some constraints
     public Path path(Vector3 start, Vector3 goal)
     {
@@ -43,15 +44,17 @@ public class PathFinding : MonoBehaviour
         {
             solution = solutions[0];
             frontier = null;
+            drawPath(solution, 0);
         }
+        drawFrontier();
         return solution;
     }
 
-    public void drawPath(Path path, int starting_index)
+    public void drawPath(Path path, int starting_index=0)
     {
         if (draw_path == false)
             return;
-        Path.drawPath(path, starting_index, this.color);
+        Path.drawPath(path, starting_index+1, this.color);
     }
 
     public void drawFrontier()

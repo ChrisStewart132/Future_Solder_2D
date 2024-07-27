@@ -117,6 +117,7 @@ public class MovementCommand : MonoBehaviour
         path = null;
         pathIndex = 0;
         state.set("idle");
+        SEARCHING_FRAMES = 0;
     }
 
     void FixedUpdate()

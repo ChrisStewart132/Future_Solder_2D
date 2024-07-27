@@ -31,6 +31,8 @@ public class World : MonoBehaviour
     bool mouse_dragging_camera = false;// middle mouse drag camera flag
     Vector3 mouse_middle_mouse_position;// middle mouse drag initial dragging position to scale camera movement
 
+    public static AudioSource audioData;
+
     void Awake()
     {
         // Singleton
@@ -45,6 +47,8 @@ public class World : MonoBehaviour
         tilemap = gameObject.GetComponentInChildren<Tilemap>();
 
         selectionBox = mouse_selection_object.GetComponent<SelectionBox>();
+
+        audioData = gameObject.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -227,20 +231,20 @@ public class World : MonoBehaviour
         Sprite sprite = tilemap.GetSprite(cellPosition);
         if(sprite != null)
         {
-            if (sprite.name == "brick" || sprite.name == "brick_2" || sprite.name == "wall")
+            if (sprite.name == "ground")
             {
-                return 9999;
+                return 1;
             }
-            else if (sprite.name == "silver")
+            else if (false)
             {
                 return -1;
             }
-            else if (sprite.name == "gold")
+            else
             {
-                return -1;
+                return 999;
             }
         }
-        return 1;
+        return 0;
     }
 
     //returns if a cell is walkable (i.e. false if building or entity occupying it
@@ -252,11 +256,25 @@ public class World : MonoBehaviour
         { 
             return true;
         }
-
-        if (sprite.name == "brick" || sprite.name == "brick_2" || sprite.name == "wall")
+        if (sprite.name == "ground")
         {
-            return false;
+            return true;
         }
-        return true;
+        return false;
+    }
+
+    public static void interact(Vector3 pos)
+    {
+        Vector3Int cellPosition = grid.WorldToCell(pos);
+        Sprite sprite = tilemap.GetSprite(cellPosition);
+        if (sprite == null)
+        {
+            return;
+        }
+        if (sprite.name == "transmitter")
+        {
+            Debug.Log("interacted.");
+            audioData.Play(0);
+        }
     }
 }
