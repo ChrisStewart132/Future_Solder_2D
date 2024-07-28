@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Future_War_2D.Interfaces;
 
-public class Projectile : MonoBehaviour
+public class Projectile : MonoBehaviour, IProjectile
 {
     public float speed = 2f;
     public float lifespan = 10f;
-    public List<Collider2D> colliders_ignored;// set by the gun
 
+    private List<Collider2D> colliders_ignored;
     private Rigidbody2D rb;
     
 
@@ -20,6 +21,11 @@ public class Projectile : MonoBehaviour
     void Start()
     {
         Destroy(gameObject, lifespan);
+    }
+
+    public void set_colliders_ignored(List<Collider2D> colliders_ignored)
+    {
+        this.colliders_ignored = colliders_ignored;
     }
 
     public void shoot(Vector2 dir)

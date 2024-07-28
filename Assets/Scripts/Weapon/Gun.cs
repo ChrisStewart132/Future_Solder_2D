@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Future_War_2D.Interfaces;
 
 public class Gun : MonoBehaviour
 {
@@ -26,9 +27,11 @@ public class Gun : MonoBehaviour
 
         GameObject go = GameObject.Instantiate(projectile_prefab);
         go.transform.position = transform.position;
-        Projectile projectile = go.GetComponent<Projectile>();
-        projectile.colliders_ignored = colliders_ignored;
+
+        IProjectile projectile = go.GetComponent<IProjectile>();
+        projectile.set_colliders_ignored(colliders_ignored);
         projectile.shoot(dir.normalized);
+
         sound.Play();
     }
 }

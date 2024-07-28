@@ -16,14 +16,17 @@ public class Detonate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool isSelected = gameObject.GetComponent<Selectable>().isSelected;
-        if (isSelected && Input.GetMouseButtonDown(0))
+        if(gameObject.GetComponent<Selectable>() != null)
         {
-            detonate();
+            bool isSelected = gameObject.GetComponent<Selectable>().isSelected;
+            if (isSelected && Input.GetMouseButtonDown(0))
+            {
+                detonate();
+            }
         }
     }
 
-    void detonate()
+    public void detonate()
     {
         // Hide this game object
         gameObject.SetActive(false);

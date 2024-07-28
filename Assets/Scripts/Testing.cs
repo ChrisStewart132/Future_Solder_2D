@@ -9,7 +9,6 @@ public class Testing : MonoBehaviour
     public GameObject soldier_go;
     public GameObject gun_go;
 
-
     void Awake()
     {
 
