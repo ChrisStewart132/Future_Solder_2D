@@ -778,7 +778,7 @@ PrefabInstance:
     - target: {fileID: 6076060785654279384, guid: 17d99dc30ef306a408918e4df6c94c24, type: 3}
       propertyPath: projectile_prefab
       value: 
-      objectReference: {fileID: 7010632883534784844, guid: 8c3b6ed4a9190384baa0312c415fc732, type: 3}
+      objectReference: {fileID: 1104715177144840006, guid: 44be79eee3f8c6945963a7cc140d0188, type: 3}
     - target: {fileID: 8045201298817272924, guid: 17d99dc30ef306a408918e4df6c94c24, type: 3}
       propertyPath: m_Name
       value: gun
@@ -793,11 +793,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8367785542373631596, guid: 17d99dc30ef306a408918e4df6c94c24, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.44
+      value: -16.57
       objectReference: {fileID: 0}
     - target: {fileID: 8367785542373631596, guid: 17d99dc30ef306a408918e4df6c94c24, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.94
+      value: 8.9
       objectReference: {fileID: 0}
     - target: {fileID: 8367785542373631596, guid: 17d99dc30ef306a408918e4df6c94c24, type: 3}
       propertyPath: m_LocalPosition.z
@@ -862,11 +862,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5808754779358474067, guid: b8e52077e54e02e44ab7d0af0c69afa0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.2805464
+      value: 14.38
       objectReference: {fileID: 0}
     - target: {fileID: 5808754779358474067, guid: b8e52077e54e02e44ab7d0af0c69afa0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.330929
+      value: -8.07
       objectReference: {fileID: 0}
     - target: {fileID: 5808754779358474067, guid: b8e52077e54e02e44ab7d0af0c69afa0, type: 3}
       propertyPath: m_LocalPosition.z

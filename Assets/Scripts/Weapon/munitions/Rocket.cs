@@ -5,6 +5,7 @@ using Future_War_2D.Interfaces;
 
 public class Rocket : MonoBehaviour, IProjectile
 {
+    public Vector2 direction;
     public float lifespan = 10f;
 
     // first stage rocket
@@ -23,7 +24,7 @@ public class Rocket : MonoBehaviour, IProjectile
 
     private Rigidbody2D rb;
     private List<Collider2D> colliders_ignored;
-    private Vector2 direction;
+    
 
     void Awake()
     {
@@ -36,9 +37,12 @@ public class Rocket : MonoBehaviour, IProjectile
         //direction = transform.up.normalized;
         rb.mass = dry_mass + fuel1 + fuel2;
     }
-
-    void FixedUpdate()
+    protected void rocket_update()
     {
+        Vector2 start = transform.position;
+        Debug.DrawLine(start, start + direction);
+
+        // rocket propulsion
         if (fuel1 > 0)
         {
             rb.AddForce(direction * thrust1, ForceMode2D.Force);
@@ -62,7 +66,7 @@ public class Rocket : MonoBehaviour, IProjectile
             GetComponentInChildren<TrailRenderer>().enabled = false;
         }
 
-
+        // swaying
         Vector2 perpendicularDirection = new Vector2(-direction.y, direction.x);
         float amplitude = 6f;
         float frequency = 6f;
@@ -72,6 +76,11 @@ public class Rocket : MonoBehaviour, IProjectile
         sway = Mathf.Round(sway / roundingIncrement) * roundingIncrement;
         sway *= amplitude;
         rb.AddForce(perpendicularDirection * sway, ForceMode2D.Force);
+    }
+
+    void FixedUpdate()
+    {
+        rocket_update();
     }
 
     public void set_colliders_ignored(List<Collider2D> colliders_ignored)

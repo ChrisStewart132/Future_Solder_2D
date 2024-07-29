@@ -5,6 +5,7 @@ using Future_War_2D.Interfaces;
 
 public class Gun : MonoBehaviour
 {
+    public Transform target; // Target to aim towards
     public GameObject projectile_prefab;
     public List<Collider2D> colliders_ignored;
     AudioSource sound;
@@ -31,6 +32,11 @@ public class Gun : MonoBehaviour
         IProjectile projectile = go.GetComponent<IProjectile>();
         projectile.set_colliders_ignored(colliders_ignored);
         projectile.shoot(dir.normalized);
+
+        if(go.GetComponent<Missile>() != null)
+        {
+            go.GetComponent<Missile>().target = target;
+        }
 
         sound.Play();
     }

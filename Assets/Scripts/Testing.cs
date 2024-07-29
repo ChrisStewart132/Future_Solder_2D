@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Testing : MonoBehaviour
 {
-    private float testInterval = 1f; // Interval in seconds
+    private float testInterval = 10f; // Interval in seconds
     private Coroutine testCoroutine;
     public GameObject soldier_go;
     public GameObject gun_go;
@@ -31,9 +31,11 @@ public class Testing : MonoBehaviour
 
     IEnumerator TestCoroutine()
     {
+        yield return new WaitForSeconds(2);
         while (true)
         {
             // Your test logic here
+            gun_go.GetComponent<Gun>().target = soldier_go.transform;
             gun_go.GetComponent<Gun>().shoot(soldier_go.transform.position - gun_go.transform.position);
 
             // Wait for the specified interval before running again
