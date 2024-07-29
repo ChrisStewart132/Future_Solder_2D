@@ -30,44 +30,6 @@ public class MovementCommand : MonoBehaviour
 
     float waypoint_proximity = 0.01f;
 
-    // consider other entity's during pathing
-    bool check_collision_priority(GameObject other)
-    {
-        if (path == null)
-            return false;
-        // heuristic to choose which entity continues and which entity pauses and re-searches
-        MovementCommand movementCommand2 = other.GetComponent<MovementCommand>();
-        Path path2 = movementCommand2.path;
-        if (path2 == null)
-            return true;
-        int pathIndex2 = movementCommand2.pathIndex;
-        int pathSize2 = path2.size();
-        int cost2 = path2.cost / Mathf.Max(1, (pathSize2 - pathIndex2));
-        int cost = path.cost / Mathf.Max(1, (path.size() - pathIndex));
-        return cost > cost2;
-    }
-    void OnTriggerEnter2D(Collider2D col)
-    {
-        if (col.gameObject.tag == "Entity" && check_collision_priority(col.gameObject))
-        {
-            state.set("colliding");
-        }
-    }
-    void OnTriggerStay2D(Collider2D col)
-    {
-        if (col.gameObject.tag == "Entity" && check_collision_priority(col.gameObject))
-        {
-            state.set("colliding");
-        }
-    }
-    void OnTriggerExit2D(Collider2D col)
-    {
-        if (col.gameObject.tag == "Entity" && check_collision_priority(col.gameObject))
-        {
-            state.set("searching");
-        }
-    }
-
     void Awake()
     { 
         collider = gameObject.GetComponent<BoxCollider2D>();
@@ -159,18 +121,7 @@ public class MovementCommand : MonoBehaviour
         }
         else if (state.get() == "colliding")
         {
-            StartCoroutine(pause_and_search(Random.Range(1f, 2f)));
+            
         }
     }
-
-
-    private IEnumerator pause_and_search(float waitTime)
-    {
-        collider.enabled = false;
-        state.set("idle");
-        yield return new WaitForSeconds(waitTime);
-        state.set("searching");
-        collider.enabled = true;
-    }
-
 }
