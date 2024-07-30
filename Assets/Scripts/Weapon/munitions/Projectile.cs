@@ -25,7 +25,6 @@ public class Projectile : MonoBehaviour, IProjectile
     void Start()
     {
         Destroy(gameObject, lifespan);
-        
     }
 
     void check_collision_ahead()
@@ -34,14 +33,15 @@ public class Projectile : MonoBehaviour, IProjectile
 
 
         Vector2 direction = rb.velocity.normalized;
-        Vector2 currentPosition = rb.position;
+        Vector2 currentPosition = transform.position;
         Vector2 nextPosition = currentPosition + direction * speed * Time.fixedDeltaTime;
 
-        RaycastHit2D hit = Physics2D.Raycast(currentPosition, direction, Vector2.Distance(currentPosition, nextPosition), layerMask);
+        //RaycastHit2D hit = Physics2D.Raycast(currentPosition, direction, Vector2.Distance(currentPosition, nextPosition), layerMask);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(currentPosition, direction, Vector2.Distance(currentPosition, nextPosition), layerMask);
 
-        if (hit.collider != null)
+        foreach (RaycastHit2D hit in hits)
         {
-            if (!colliders_ignored.Contains(hit.collider))
+            if (hit.collider != null && !colliders_ignored.Contains(hit.collider))
             {
                 // Generate a random ricochet speed within a specific range
                 float minRicochetSpeed = 5f;
@@ -80,6 +80,7 @@ public class Projectile : MonoBehaviour, IProjectile
                 }
                 col.enabled = false;
                 Destroy(gameObject, 1);
+                break;// break after finding the first valid collision in the raycast
             }
         }
     }

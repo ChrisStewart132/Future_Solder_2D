@@ -47,14 +47,16 @@ public class Gun : MonoBehaviour
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
-
+        // create concrete IProjectile (projectile, rocekt, missile)
         GameObject go = GameObject.Instantiate(projectile_prefab);
         go.transform.position = transform.position;
 
+        // get IProjectile interface and init
         IProjectile projectile = go.GetComponent<IProjectile>();
         projectile.set_colliders_ignored(colliders_ignored);
         projectile.shoot(dir.normalized);
 
+        // if Missile...
         if(go.GetComponent<Missile>() != null)
         {
             go.GetComponent<Missile>().target = target;
