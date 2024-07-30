@@ -37,18 +37,26 @@ public class AI : MonoBehaviour
         {
             // set movement target
             movementCommand.target = target.position;
+            // change to searching to init pathfinding
+            state.set("searching");
         }
-        else
+        else if (Random.Range(0f, 1f) > 0.99)
         {
+            // random move
             float distance = 8f;
             float random_x = Random.Range(-0.5f, 0.5f) * distance;
             float random_y = Random.Range(-0.5f, 0.5f) * distance;
             movementCommand.target = transform.position + new Vector3(random_x, random_y, 0);
+            // change to searching to init pathfinding
+            state.set("searching");
+        }
+        else
+        {
+            // idle
         }
             
 
-        // change to searching to init pathfinding
-        state.set("searching");
+        
     }
 
     bool sense_target()

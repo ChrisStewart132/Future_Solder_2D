@@ -297,6 +297,14 @@ PrefabInstance:
       propertyPath: dir.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6076060785654279384, guid: 17d99dc30ef306a408918e4df6c94c24, type: 3}
+      propertyPath: colliders_ignored.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6076060785654279384, guid: 17d99dc30ef306a408918e4df6c94c24, type: 3}
+      propertyPath: colliders_ignored.Array.data[0]
+      value: 
+      objectReference: {fileID: 4080763653603739800}
     - target: {fileID: 8045201298817272924, guid: 17d99dc30ef306a408918e4df6c94c24, type: 3}
       propertyPath: m_Name
       value: gun

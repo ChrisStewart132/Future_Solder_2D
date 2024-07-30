@@ -9,6 +9,11 @@ public class Gun : MonoBehaviour
     public GameObject projectile_prefab;
     public List<Collider2D> colliders_ignored;
     AudioSource sound;
+    public bool mouse_controlled = false;
+
+    public int rpm = 60;
+    private float cooldown = 0;
+
     void Awake()
     {
         sound = GetComponent<AudioSource>();
@@ -17,6 +22,23 @@ public class Gun : MonoBehaviour
     void Start()
     {
 
+    }
+
+    void FixedUpdate()
+    {
+
+        if (cooldown > 0)
+            cooldown -= Time.fixedDeltaTime;
+
+
+        bool can_shoot = cooldown <= 0;
+        if(can_shoot && mouse_controlled && Input.GetMouseButton(0))
+        {
+            Vector3 mouse_pos = World.get_mouse_position();
+            Vector3 dir = mouse_pos - transform.position;
+            shoot(dir.normalized);
+            cooldown += 60 / rpm;
+        }
     }
 
     public void shoot(Vector3 dir)

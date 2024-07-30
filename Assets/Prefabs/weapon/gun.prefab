@@ -96,8 +96,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce1b520ca9c0ec74e92af3c70c175013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
   projectile_prefab: {fileID: 4617249407512527760, guid: 816fb448db6e91c45863f7bc648e3101, type: 3}
   colliders_ignored: []
+  mouse_controlled: 0
+  rpm: 600
 --- !u!82 &4315853287946725328
 AudioSource:
   m_ObjectHideFlags: 0
