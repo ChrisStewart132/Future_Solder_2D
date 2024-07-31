@@ -10,12 +10,28 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    public bool wasd_movement = false;
     public float maxSpeed = 4f;
     private Rigidbody2D rb;
 
     public void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
+    }
+
+    void FixedUpdate()
+    {
+        if (wasd_movement)
+        {
+            // Get input from WASD keys (-1, 1) for each axis
+            float moveHorizontal = Input.GetAxis("Horizontal");
+            float moveVertical = Input.GetAxis("Vertical");
+
+            // Create movement vector 
+            Vector3 movement_direction = new Vector2(moveHorizontal, moveVertical);
+
+            move_toward(transform.position + movement_direction);
+        }
     }
 
     public void move_toward(Vector3 target)
@@ -33,6 +49,7 @@ public class Movement : MonoBehaviour
         }
 
         // face left(-) or right(+)
+        /*
         if(rb.velocity.x >= 0)
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
@@ -40,8 +57,8 @@ public class Movement : MonoBehaviour
         else
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
-        }
-        
+        }*/
+
     }
 
     public void stop_moving()

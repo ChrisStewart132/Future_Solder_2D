@@ -37,14 +37,14 @@ public class Gun : MonoBehaviour
             Vector3 mouse_pos = World.get_mouse_position();
             Vector3 dir = mouse_pos - transform.position;
             shoot(dir.normalized);
-            cooldown += 60 / rpm;
+            cooldown = 60f / rpm;
         }
     }
 
     public void shoot(Vector3 dir)
     {
         // Rotate the gun to aim at the direction
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + 270;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
         // create concrete IProjectile (projectile, rocekt, missile)
