@@ -19,7 +19,7 @@ public class TacticalLaser : MonoBehaviour
     void ShootLaser()
     {
         Vector3 startPosition = transform.position;
-        Vector3 direction = transform.up; // Assuming the laser shoots to the right of the GameObject
+        Vector3 direction = transform.up; 
 
         RaycastHit2D hit = Physics2D.Raycast(startPosition, direction, maxRange, hitLayers);
         Vector3 endPosition;

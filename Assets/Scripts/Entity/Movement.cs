@@ -10,6 +10,7 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    public bool player_controlled = false;
     public bool wasd_movement = false;
     public float maxSpeed = 4f;
     private Rigidbody2D rb;
@@ -21,7 +22,7 @@ public class Movement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (wasd_movement)
+        if (player_controlled && wasd_movement)
         {
             // Get input from WASD keys (-1, 1) for each axis
             float moveHorizontal = Input.GetAxis("Horizontal");
@@ -41,7 +42,8 @@ public class Movement : MonoBehaviour
         float d = direction.magnitude;
         if(d > maxSpeed * Time.deltaTime)
         {            
-            rb.velocity = direction.normalized * maxSpeed;// full speed
+            float speed = Input.GetKey(KeyCode.LeftShift) ? maxSpeed*2 : maxSpeed;
+            rb.velocity = direction.normalized * speed;// full speed
         }
         else
         {

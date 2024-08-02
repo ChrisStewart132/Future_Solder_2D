@@ -7,7 +7,7 @@ public class EntityController : MonoBehaviour
     // entity will orient themselves to face the mouse world pos
     public bool mouse_aim_point = false;
 
-
+    public bool player_controlled = false;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +18,7 @@ public class EntityController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(mouse_aim_point == true)
+        if(player_controlled && mouse_aim_point == true)
         {
             aim_at_mouse_point();
         }

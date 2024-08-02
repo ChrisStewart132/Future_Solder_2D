@@ -19,6 +19,7 @@ public class World : MonoBehaviour
     public static World Instance { get; private set; }
     public static Grid grid;
     public static Tilemap tilemap;
+    public bool show_moused_over_tile=false;
 
     // GameObject cell to render mouse grid pos
     public GameObject mouse_cell_object;
@@ -28,9 +29,7 @@ public class World : MonoBehaviour
     SelectionBox selectionBox;// selection box script contains a List<> of Selectables
     Vector3 mouse_down_position;// save mouse pos of last mouse down
     bool selecting = false;// flag for selection box 
-    bool mouse_dragging_camera = false;// middle mouse drag camera flag
-    Vector3 mouse_middle_mouse_position;// middle mouse drag initial dragging position to scale camera movement
-
+    
     public static AudioSource audioData;
 
     void Awake()
@@ -55,9 +54,18 @@ public class World : MonoBehaviour
     {
         Vector3 mouseWorldPosition = World.get_mouse_position();
 
-        // show cell moused over
-        Vector3Int cell_pos = World.snapToGrid(mouseWorldPosition);
-        mouse_cell_object.transform.position = cell_pos;
+
+        if (show_moused_over_tile)
+        {
+            mouse_cell_object.SetActive(true);
+            Vector3Int cell_pos = World.snapToGrid(mouseWorldPosition);
+            mouse_cell_object.transform.position = cell_pos;
+        }
+        else
+        {
+            mouse_cell_object.SetActive(false);
+        }
+        
 
         // left click 
         // show mouse down selection
@@ -118,24 +126,7 @@ public class World : MonoBehaviour
             //selected_guns_shoot(mouseWorldPosition);
         }
 
-        // middle mouse button down
-        if (Input.GetMouseButtonDown(2)) // 2 represents the middle mouse button
-        {
-            // Capture the starting position of the drag
-            mouse_middle_mouse_position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mouse_dragging_camera = true;
-        }
-        // middle mouse button release
-        if (Input.GetMouseButtonUp(2))
-        {
-            mouse_dragging_camera = false;
-        }
-        // If dragging, calculate the offset and move the camera
-        if (mouse_dragging_camera)
-        {
-            Vector3 difference = mouse_middle_mouse_position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Camera.main.transform.position += difference/10f;
-        }
+        
     }
 
     void selected_guns_shoot(Vector3 pos)
