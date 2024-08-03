@@ -1,22 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Future_War_2D.Interfaces;
 
-public class CarController : MonoBehaviour
+public class CarController : MonoBehaviour, IInteractable
 {
     // editor set items
     public AudioSource idleSound;
     public AudioSource throttleSound;
+    public AudioSource ignitionSound;
+    public AudioSource doorSound;
+    public AudioSource radioSound;
 
-    // user settings
-    public bool player_controlled = false;
-    public float acceleration = 10f;// engine acc
-    
-    // input
-    float steering_input = 0;
-    float acceleration_input = 0;
-    
     // state
+    public bool player_controlled = false;
+    public GameObject interactor_go;// save the go driving the car
+    public bool engine_on = false;
+    int speed_mode = 0;//-1, 0, 1 (slow neutral fast)
+    float speed_mode_factor = 0.25f;
     public float steering_angle = 0f;
     public float speed = 0f;
     public float throttle = 0;
@@ -27,19 +28,21 @@ public class CarController : MonoBehaviour
     public bool skidding = false;
 
     // settings
-    float max_steering_angle = 45f;
-    float steering_speed = 0.1f;
-    float steering_force = 10f;
-    float handbrakeDeceleration = 20000f;
-
+    public float acceleration = 10f;// engine acc
+    public float max_steering_angle = 45f;
+    float handbrakeDeceleration = 15000f;
     float wheel_base = 1.8f;// The distance between front and rear axle is known at the wheel base and denoted as L
 
 
     // private
     private float r;// radius from wheels to centre of turn
-    private Rigidbody2D rb;
+    
+    float steering_input = 0;
+    float acceleration_input = 0;
 
+    // f=front, a=axle, l=left, r=right/rear, w=wheel
     GameObject fa, flw, frw, ra, rlw, rrw;
+    private Rigidbody2D rb;
 
     void Awake()
     {
@@ -78,6 +81,11 @@ public class CarController : MonoBehaviour
             acceleration_input = input.y;
             handbrake = Input.GetButton("Jump");
             draw();
+
+            if (Input.GetMouseButtonUp(1))// player exit car
+            {
+                interaction(interactor_go);
+            }
         }
     }
 
@@ -85,7 +93,20 @@ public class CarController : MonoBehaviour
 
     void FixedUpdate()
     {
-        engineForce();
+        if (Input.GetKey(KeyCode.LeftShift))// shift turbo/sprint
+        {
+            speed_mode = 1;
+        }else if (Input.GetKey(KeyCode.LeftControl))
+        {
+            speed_mode = -2;
+        }
+
+
+        if (engine_on)
+        {
+            engineForce();
+        }
+        
         steering();
         if (handbrake)
         {
@@ -96,7 +117,40 @@ public class CarController : MonoBehaviour
 
         sound();
         state();
+        speed_mode = 0;
     }
+
+
+    public void interaction(GameObject go)
+    {
+        ignition();
+        player_controlled = !player_controlled;
+
+        if (player_controlled)
+        {
+            interactor_go = go;
+            go.transform.position = transform.position;
+            go.transform.SetParent(transform);
+            go.SetActive(false);
+        }
+        else
+        {
+            stop_sound();
+            interactor_go = null;
+            go.transform.SetParent(null);
+            go.SetActive(true);
+
+            // TODO temp fix, movement has to re-enable to register play controlled movement (wasd)
+            Movement movement = go.GetComponent<Movement>();
+            if(movement != null)
+            {
+                movement.enabled = false;
+                movement.enabled = true;
+            }
+        }
+    }
+
+
 
     void state()
     {
@@ -106,6 +160,8 @@ public class CarController : MonoBehaviour
     void engineForce()
     {
         float force = rb.mass * acceleration;
+        if(speed_mode != 0) force = force + force*(speed_mode_factor * speed_mode);
+
         Vector2 dir = transform.up * (acceleration_input+0.0f) * force;
         rb.AddForce(dir, ForceMode2D.Force);
     }
@@ -113,12 +169,10 @@ public class CarController : MonoBehaviour
     void steering()
     {
         steering_angle = max_steering_angle * steering_input * -1;
+        if(speed_mode != 0) steering_angle = steering_angle + steering_angle * (speed_mode_factor * speed_mode);
         //Debug.Log(steering_input);
         flw.transform.localRotation = Quaternion.Euler(0, 0, steering_angle);
         frw.transform.localRotation = Quaternion.Euler(0, 0, steering_angle);
-
-        //rb.AddTorque(steering_angle * steering_force * rb.velocity.magnitude);
-
 
         // Calculate the turning radius
         // Ensure steering_angle is in radians for the trigonometric functions
@@ -182,34 +236,77 @@ public class CarController : MonoBehaviour
         }
     }
 
+    void stop_sound()
+    {
+        idleSound.Stop();
+        throttleSound.Stop();
+        ignitionSound.Stop();
+        doorSound.Stop();
+        radioSound.Pause();
+    }
+
     void sound()
     {
-        if(throttle != 0 && !throttleSound.isPlaying)
+        if (engine_on)
+        {
+            engine_sound();
+        }
+        tire_sound();
+    }
+
+    void engine_sound()
+    {
+        if (throttle != 0 && !throttleSound.isPlaying)
         {
             throttleSound.Play();
             idleSound.Stop();
         }
-        else if(throttle == 0)
+        else if (throttle == 0)
         {
             throttleSound.Stop();
         }
 
-        if(throttle == 0 && !idleSound.isPlaying)
+        if (throttle == 0 && !idleSound.isPlaying)
         {
             throttleSound.Stop();
             idleSound.Play();
         }
+    }
 
+    void tire_sound()
+    {
         if (skidding && !rlw.GetComponent<AudioSource>().isPlaying)
         {
             rlw.GetComponent<AudioSource>().Play();
             //rrw.GetComponent<AudioSource>().Play();
         }
-        else if(!skidding)
+        else if (!skidding)
         {
             rlw.GetComponent<AudioSource>().Stop();
             //rrw.GetComponent<AudioSource>().Stop();
         }
+    }
+
+    void ignition()
+    {
+        if(!engine_on && !ignitionSound.isPlaying)
+        {
+            ignitionSound.Play();
+        }else if (engine_on)
+        {
+            ignitionSound.Stop();
+        }
+
+
+        if (!engine_on && !radioSound.isPlaying)
+        {
+            radioSound.Play();
+        }else if (engine_on)
+        {
+            radioSound.Pause();
+        }
+
+        engine_on = !engine_on;
     }
 
     void draw()

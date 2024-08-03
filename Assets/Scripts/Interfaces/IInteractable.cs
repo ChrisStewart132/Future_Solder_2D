@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace Future_War_2D.Interfaces
 {
-    public interface IMovement
+    public interface IInteractable
     {
-        void Move(Vector2 direction);
-        void Stop();
+        void interaction(GameObject go);
     }
 }
+

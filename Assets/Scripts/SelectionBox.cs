@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SelectionBox : MonoBehaviour
 {
-    private List<Selectable> selectedObjects = new List<Selectable>();
+    public List<Selectable> selectedObjects = new List<Selectable>();
 
     // called when this GameObject collides with GameObject2.
     void OnTriggerEnter2D(Collider2D col)

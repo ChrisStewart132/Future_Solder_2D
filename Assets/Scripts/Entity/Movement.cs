@@ -15,19 +15,20 @@ public class Movement : MonoBehaviour
     public float maxSpeed = 4f;
     private Rigidbody2D rb;
 
-    public void Start()
+    public void Awake()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
     void FixedUpdate()
     {
-        if (player_controlled && wasd_movement)
+        // Get input from WASD keys (-1, 1) for each axis
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
+        bool input = moveHorizontal != 0 || moveVertical != 0;
+        if (player_controlled && wasd_movement && input)
         {
-            // Get input from WASD keys (-1, 1) for each axis
-            float moveHorizontal = Input.GetAxis("Horizontal");
-            float moveVertical = Input.GetAxis("Vertical");
-
+          
             // Create movement vector 
             Vector3 movement_direction = new Vector2(moveHorizontal, moveVertical);
 
