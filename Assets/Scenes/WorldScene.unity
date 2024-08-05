@@ -631,7 +631,7 @@ MonoBehaviour:
   wasd_movement: 0
   mouse_movement: 0
   anchored: 1
-  anchor: {fileID: 1915174596}
+  anchor: {fileID: 625216528}
   middle_mouse_dragging: 0
   middle_scroll_zoom: 1
 --- !u!20 &519420031
@@ -1221,7 +1221,7 @@ MonoBehaviour:
   wasd_movement: 0
   mouse_movement: 0
   anchored: 1
-  anchor: {fileID: 625216528}
+  anchor: {fileID: 1697303080}
   middle_mouse_dragging: 0
   middle_scroll_zoom: 0
 --- !u!1 &997979915
@@ -2189,6 +2189,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9cdecc38a5c4b7b44ab30be375e54557, type: 3}
+--- !u!4 &1697303080 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 528242585369206532, guid: 9cdecc38a5c4b7b44ab30be375e54557, type: 3}
+  m_PrefabInstance: {fileID: 1697303079}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1700651443
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18381,11 +18386,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!4 &1915174596 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1422457926022582569, guid: 011c7069bdd7fa143bf2c023afadfba4, type: 3}
-  m_PrefabInstance: {fileID: 1924201968}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1916692536
 PrefabInstance:
   m_ObjectHideFlags: 0
