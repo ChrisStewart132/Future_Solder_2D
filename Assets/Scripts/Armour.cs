@@ -18,6 +18,7 @@ public class Armour : MonoBehaviour
     public int armour_class = 1;
     public float durability;
     public float max_durability=100;
+    
 
     private Collider2D col;
     private Rigidbody2D rb;

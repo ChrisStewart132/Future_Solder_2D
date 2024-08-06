@@ -8,6 +8,8 @@ public class Projectile : MonoBehaviour, IProjectile
     public int armour_class = 3;//1-6
     public float speed = 2f;
     public float lifespan = 10f;
+    public float damage = 10f;
+    public AudioSource ricochet_sound;
 
     private List<Collider2D> colliders_ignored;
     private Rigidbody2D rb;
@@ -53,19 +55,27 @@ public class Projectile : MonoBehaviour, IProjectile
                 transform.position = hit.point; // Move to the point of collision
 
                 Armour armour = hit.collider.gameObject.GetComponent<Armour>();
+                IDamageable damageable = hit.collider.gameObject.GetComponent<IDamageable>();
                 if (armour == null)
                 {
-                    //Destroy(hit.collider.gameObject);
+                    if (damageable != null)
+                    {
+                        damage_hit(damageable);
+                    }
                 }
                 else if (armour.durability <= 0)
                 {
-                    Destroy(hit.collider.gameObject);
+                    if (damageable != null)
+                    {
+                        damage_hit(damageable);
+                    }
                 }
                 else if (armour_class < armour.armour_class)
                 {
                     // ricochet
                     rb.velocity = hit.normal * ricochet_speed;
                     Destroy(gameObject, Time.fixedDeltaTime * 20);
+                    ricochet_sound.Play();
                     return;
                 }
                 else if (armour_class == armour.armour_class)
@@ -76,7 +86,10 @@ public class Projectile : MonoBehaviour, IProjectile
                 else
                 {
                     // penetrate armor
-
+                    if (damageable != null)
+                    {
+                        damage_hit(damageable);
+                    }
                 }
                 col.enabled = false;
                 Destroy(gameObject, 1);
@@ -102,12 +115,24 @@ public class Projectile : MonoBehaviour, IProjectile
         check_collision_ahead();
     }
 
+    void damage_hit(IDamageable damageable)
+    {
+        damageable.hit(damage);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // TODO only handle collisions using raycast in check collision ahead
         if(colliders_ignored.Contains(collision))
         {
             return;
         }
+        /*
+        IDamageable damageable = collision.gameObject.GetComponent<IDamageable> ();
+        if(damageable != null)
+        {
+            hit(damageable);
+        }*/
         //Destroy(gameObject);
         //Debug.Log(collision.gameObject.name + " hit");
     }

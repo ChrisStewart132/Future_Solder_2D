@@ -155,7 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player_controlled: 1
   wasd_movement: 1
-  maxSpeed: 2
+  maxSpeed: 1
 --- !u!114 &4916810062483490085
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Future_War_2D.Interfaces;
 
-public class Bird : MonoBehaviour, IMovement
+public class Bird : MonoBehaviour, IMovement, IDamageable
 {
+    public float hp = 20;
     public bool flying = false;
     public float flying_speed = 3f;
     public float walking_speed = 1f;
+    public AudioSource hit_sound;
+
     private Rigidbody2D rb;
     private Animator animator;
 
@@ -42,5 +45,21 @@ public class Bird : MonoBehaviour, IMovement
         // Move the character
         float speed = flying ? flying_speed : walking_speed;
         rb.velocity = movement * speed;
+    }
+
+    public void hit(float damage)
+    {
+        hit_sound.Play();
+        hp -= damage;
+        if(hp <= 0)
+        {
+            die();
+        }
+    }
+
+    void die()
+    {
+        //gameObject.enaled = false;
+        Destroy(gameObject, 0.1f);
     }
 }
