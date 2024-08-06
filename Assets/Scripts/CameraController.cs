@@ -44,7 +44,7 @@ public class CameraController : MonoBehaviour
         {
             
         }
-        if (anchored)
+        if (anchored && cam.transform != null)
         {
             cam.transform.position = anchor.position;
         }

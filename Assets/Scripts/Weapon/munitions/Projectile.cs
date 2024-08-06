@@ -55,7 +55,7 @@ public class Projectile : MonoBehaviour, IProjectile
                 Armour armour = hit.collider.gameObject.GetComponent<Armour>();
                 if (armour == null)
                 {
-                    Destroy(hit.collider.gameObject);
+                    //Destroy(hit.collider.gameObject);
                 }
                 else if (armour.durability <= 0)
                 {

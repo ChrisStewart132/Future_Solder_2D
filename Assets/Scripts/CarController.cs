@@ -80,7 +80,7 @@ public class CarController : MonoBehaviour, IInteractable
             steering_input = input.x;
             acceleration_input = input.y;
             handbrake = Input.GetButton("Jump");
-            draw();
+            
 
             if (Input.GetMouseButtonUp(1))// player exit car
             {
@@ -117,6 +117,7 @@ public class CarController : MonoBehaviour, IInteractable
 
         sound();
         state();
+        draw();
         speed_mode = 0;
     }
 

@@ -22,7 +22,7 @@ public class SceneTransition : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("scene transition collision with " + other.name);
+        //Debug.Log("scene transition collision with " + other.name);
         if(other.tag == "Player")
         {
             SceneManager.LoadScene(next_scene_index, LoadSceneMode.Single);

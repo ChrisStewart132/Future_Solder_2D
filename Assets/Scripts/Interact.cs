@@ -28,7 +28,7 @@ public class Interact : MonoBehaviour
     void interact()
     {
         // check nearby grid cells to interact with
-        interact_grid();
+        //interact_grid();
 
         // check nearby go's to interact with
         interact_radius();

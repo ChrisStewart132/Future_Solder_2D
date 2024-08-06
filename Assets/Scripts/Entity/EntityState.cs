@@ -16,12 +16,18 @@ public class EntityState : MonoBehaviour
     void Awake()
     {
         states = gameObject.GetComponentsInChildren<SpriteRenderer>();
+        
+    }
+
+    void Start()
+    {
         reset();
         set("idle");
     }
 
     void reset()
     {
+        if (states == null) return;
         for (int i = 0; i < states.Length; i++)
         {
             if (states[i].gameObject.name != "selected")
@@ -33,6 +39,7 @@ public class EntityState : MonoBehaviour
 
     public void set(string state, bool status=true)
     {
+        if (states == null) return;
         if (state != "selected")
             reset();
         for (int i = 0; i < states.Length; i++)
